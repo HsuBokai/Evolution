@@ -18,7 +18,7 @@ canvas{
 <script type='text/javascript'>
 window.onload = function() {
 
-var Paint = function(index_i, index_j, mountDownFun)
+var Paint = function(index_i, index_j, clickCanvas, gene)
 {
 	this.origin_x = 160;
 	this.origin_y = 120;
@@ -26,10 +26,7 @@ var Paint = function(index_i, index_j, mountDownFun)
 	var canvasAttrs = canvas.attributes;
 	canvas.index_i = index_i;
 	canvas.index_j = index_j;
-	var init_gene = new Gene(5, 100, 30, 0.5, 10);
-	init_gene.mutate();
-	console.log(init_gene);
-	canvas.life_tree = new LifeTree(init_gene);
+	this.life_tree = new LifeTree(gene);
 	canvas.setAttribute("width", parseInt(2 * this.origin_x));
 	canvas.setAttribute("height", parseInt(2 * this.origin_y));
 	var normal_canvas_shadow = "5px 10px gray";
@@ -45,13 +42,18 @@ var Paint = function(index_i, index_j, mountDownFun)
 	canvas.addEventListener("mouseleave", function( event ) {
 		event.target.setAttribute("style", "box-shadow: " + normal_canvas_shadow);
 	}, false);
-	canvas.addEventListener("mousedown", mountDownFun, false);
+	canvas.addEventListener("mousedown", clickCanvas, false);
 	this.canvas = canvas;
 }
 
 Paint.prototype.x_axis = function(x)
 {
 	return x + this.origin_x;
+}
+
+Paint.prototype.clearPaint = function()
+{
+	this.context.clearRect(0, 0, this.origin_x * 2, this.origin_y * 2);
 }
 
 Paint.prototype.y_axis = function(y)
@@ -61,28 +63,49 @@ Paint.prototype.y_axis = function(y)
 
 Paint.prototype.animate = function()
 {
-	this.canvas.life_tree.animate(this);
+	this.life_tree.animate(this);
 }
 
 var Choices = function()
 {
-	this.arr = [];
-	var mountDownFun = function(event){
+	var paintArr = [];
+	this.arr = paintArr;
+	function showAnimate()
+	{
+		for (var i in paintArr) {
+			for (var j in paintArr[i]) {
+				paintArr[i][j].animate();
+			}
+		}
+	}
+	function clickCanvas (event)
+	{
 		var canvas = event.target;
+		var gene_winer = new Gene(0,0,0,0,0);
+		gene_winer.setGene(paintArr[canvas.index_i][canvas.index_j].life_tree.gene);
+		for (var i in paintArr) {
+			for (var j in paintArr[i]) {
+				paintArr[i][j].life_tree.gene.setGene(gene_winer);
+				paintArr[i][j].life_tree.gene.mutate();
+				//console.log("=======");
+				//console.log(gene_winer);
+				//console.log(paintArr[i][j].life_tree.gene);
+				//console.log("=======");
+			}
+		}
+		paintArr[0][0].life_tree.gene.setGene(gene_winer);
+		showAnimate();
 	}
 	for (var i = 0; i < 3; ++i) {
 		var arr_temp = [];
 		for (var j = 0; j < 2; ++j) {
-			arr_temp.push(new Paint(i, j, mountDownFun));
+			var init_gene = new Gene(1, 50, 30, 0.5, 10);
+			init_gene.mutate();
+			arr_temp.push(new Paint(i, j, clickCanvas, init_gene));
 		}
 		this.arr.push(arr_temp);
 	}
-
-	for (var i in this.arr) {
-		for (var j in this.arr[i]) {
-			this.arr[i][j].animate();
-		}
-	}
+	showAnimate();
 }
 
 var choices = new Choices();

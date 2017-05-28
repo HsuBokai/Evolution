@@ -33,6 +33,15 @@ var Gene = function(total_level, init_len, init_theta, len_r, theta_t)
 	this.theta_t = theta_t;
 }
 
+Gene.prototype.setGene = function(gene)
+{
+	this.total_level = gene.total_level;
+	this.init_len = gene.init_len;
+	this.init_theta = gene.init_theta;
+	this.len_r = gene.len_r;
+	this.theta_t = gene.theta_t;
+}
+
 Gene.prototype.mutate = function()
 {
 	var change = Math.floor(Math.random() * 2) * 2 - 1;
@@ -78,7 +87,7 @@ LifeTree.prototype.grow = function(paint)
 {
 	this.level_1_count ++;
 	this.growPoints.push(new GrowPoint(1, 0, 0, this.growLen(this.gene.init_len), this.growTheta(this.gene.init_theta, this.level_1_count)));
-	for(var i in this.growPoints){
+	for(var i in this.growPoints) {
 		var p = this.growPoints[i];
 		p.branch(paint);
 		p.count ++;
@@ -89,12 +98,14 @@ LifeTree.prototype.grow = function(paint)
 
 LifeTree.prototype.animate = function(paint)
 {
-	function sleep (time){
+	paint.clearPaint();
+	this.level_1_count = 0;
+	this.growPoints = [];
+	function sleep (time)
+	{
 		return new Promise((resolve) => setTimeout(resolve, time));
 	}
-	for(var i=0; i<this.gene.total_level; ++i){
+	for(var i=0; i<this.gene.total_level; ++i) {
 		sleep(i * 500).then(() => {this.grow(paint)})
 	}
 }
-
-
