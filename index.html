@@ -26,7 +26,10 @@ var Paint = function(index_i, index_j, mountDownFun)
 	var canvasAttrs = canvas.attributes;
 	canvas.index_i = index_i;
 	canvas.index_j = index_j;
-	canvas.life_tree = new LifeTree();
+	var init_gene = new Gene(5, 100, 30, 0.5, 10);
+	init_gene.mutate();
+	console.log(init_gene);
+	canvas.life_tree = new LifeTree(init_gene);
 	canvas.setAttribute("width", parseInt(2 * this.origin_x));
 	canvas.setAttribute("height", parseInt(2 * this.origin_y));
 	var normal_canvas_shadow = "5px 10px gray";
@@ -66,7 +69,6 @@ var Choices = function()
 	this.arr = [];
 	var mountDownFun = function(event){
 		var canvas = event.target;
-		console.log([canvas.index_i, canvas.index_j]);
 	}
 	for (var i = 0; i < 3; ++i) {
 		var arr_temp = [];
