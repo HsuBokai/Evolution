@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Evolution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+body{ 
+	margin:0px 0px 0px 0px;
+}
+</style>
+<script type='text/javascript' src="./LifeTree.js"></script>
+<script type='text/javascript' src="./ToolLine.js"></script>
+<script type='text/javascript'>
+window.onload = function() {
+
+var Paint = function(canvas_id)
+{
+	this.origin_x = 200;
+	this.origin_y = 150;
+	var canvas = document.createElement("canvas");
+	var canvasAttrs = canvas.attributes;
+	canvas.setAttribute("id", "canvas1");
+	canvas.setAttribute("width", parseInt(2 * this.origin_x));
+	canvas.setAttribute("height", parseInt(2 * this.origin_y));
+	canvas.setAttribute("style", "background-color:gray;");
+	document.body.appendChild(canvas);
+	this.context = canvas.getContext("2d");
+	this.context.strokeStyle = "black";
+	this.context.lineWidth = 2;
+}
+
+Paint.prototype.x_axis = function(x)
+{
+	return x + this.origin_x;
+}
+
+Paint.prototype.y_axis = function(y)
+{
+	return y + this.origin_y;
+}
+
+var paint = new Paint("canvas1")
+var life_tree = new LifeTree();
+life_tree.animate(paint);
+
+} // window.onload
+</script>
+</head>
+<body bgcolor="black"> 
+</body>
+</html>
