@@ -6,6 +6,11 @@
 <style type="text/css">
 body{ 
 	margin:0px 0px 0px 0px;
+	background: gold;
+}
+canvas{
+	margin:1%;
+	background: white;
 }
 </style>
 <script type='text/javascript' src="./LifeTree.js"></script>
@@ -13,20 +18,32 @@ body{
 <script type='text/javascript'>
 window.onload = function() {
 
-var Paint = function(canvas_id)
+var Paint = function(index_i, index_j, mountDownFun)
 {
-	this.origin_x = 200;
-	this.origin_y = 150;
+	this.origin_x = 160;
+	this.origin_y = 120;
 	var canvas = document.createElement("canvas");
 	var canvasAttrs = canvas.attributes;
-	canvas.setAttribute("id", "canvas1");
+	canvas.index_i = index_i;
+	canvas.index_j = index_j;
+	canvas.life_tree = new LifeTree();
 	canvas.setAttribute("width", parseInt(2 * this.origin_x));
 	canvas.setAttribute("height", parseInt(2 * this.origin_y));
-	canvas.setAttribute("style", "background-color:gray;");
+	var normal_canvas_shadow = "5px 10px gray";
+	canvas.setAttribute("style", "box-shadow: " + normal_canvas_shadow);
 	document.body.appendChild(canvas);
 	this.context = canvas.getContext("2d");
 	this.context.strokeStyle = "black";
 	this.context.lineWidth = 2;
+
+	canvas.addEventListener("mouseenter", function( event ) {
+		event.target.setAttribute("style","box-shadow: inset 0 0 10px #444444, " + normal_canvas_shadow);
+	}, false);
+	canvas.addEventListener("mouseleave", function( event ) {
+		event.target.setAttribute("style", "box-shadow: " + normal_canvas_shadow);
+	}, false);
+	canvas.addEventListener("mousedown", mountDownFun, false);
+	this.canvas = canvas;
 }
 
 Paint.prototype.x_axis = function(x)
@@ -39,13 +56,38 @@ Paint.prototype.y_axis = function(y)
 	return y + this.origin_y;
 }
 
-var paint = new Paint("canvas1")
-var life_tree = new LifeTree();
-life_tree.animate(paint);
+Paint.prototype.animate = function()
+{
+	this.canvas.life_tree.animate(this);
+}
+
+var Choices = function()
+{
+	this.arr = [];
+	var mountDownFun = function(event){
+		var canvas = event.target;
+		console.log([canvas.index_i, canvas.index_j]);
+	}
+	for (var i = 0; i < 3; ++i) {
+		var arr_temp = [];
+		for (var j = 0; j < 2; ++j) {
+			arr_temp.push(new Paint(i, j, mountDownFun));
+		}
+		this.arr.push(arr_temp);
+	}
+
+	for (var i in this.arr) {
+		for (var j in this.arr[i]) {
+			this.arr[i][j].animate();
+		}
+	}
+}
+
+var choices = new Choices();
 
 } // window.onload
 </script>
 </head>
-<body bgcolor="black"> 
+<body>
 </body>
 </html>
