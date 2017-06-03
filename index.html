@@ -12,6 +12,14 @@ canvas{
 	margin:1%;
 	background: white;
 }
+h1{
+	position: relative;
+	left: 30%;
+}
+footer{
+	position: relative;
+	left: 10%;
+}
 </style>
 <script type='text/javascript' src="./LifeTree.js"></script>
 <script type='text/javascript' src="./ToolLine.js"></script>
@@ -108,9 +116,15 @@ var Choices = function()
 
 var choices = new Choices();
 
+var footer = document.createElement("footer");
+var newContent = document.createTextNode("adapted from the idea in \"The Blind Watchmaker\" by Richard Dawkins"); 
+footer.appendChild(newContent);
+document.body.appendChild(footer);
+
 } // window.onload
 </script>
 </head>
 <body>
+<h1>Choose What You Like!</h1>
 </body>
 </html>

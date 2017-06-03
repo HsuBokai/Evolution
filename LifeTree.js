@@ -25,8 +25,8 @@ GrowPoint.prototype.branch = function(paint)
 	tool.draw(paint);
 	
 	var tool = new ToolLine();
-	tool.setStartPoint(this.x, -this.y);
-	tool.setEndPoint(this.next_x, -this.next_y);
+	tool.setStartPoint(-this.x, this.y);
+	tool.setEndPoint(-this.next_x, this.next_y);
 	tool.draw(paint);
 }
 
