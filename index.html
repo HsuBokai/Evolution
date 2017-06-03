@@ -33,8 +33,6 @@ var Paint = function(index_i, index_j, clickCanvas, gene)
 	canvas.setAttribute("style", "box-shadow: " + normal_canvas_shadow);
 	document.body.appendChild(canvas);
 	this.context = canvas.getContext("2d");
-	this.context.strokeStyle = "black";
-	this.context.lineWidth = 2;
 
 	canvas.addEventListener("mouseenter", function( event ) {
 		event.target.setAttribute("style","box-shadow: inset 0 0 10px #444444, " + normal_canvas_shadow);
@@ -81,7 +79,7 @@ var Choices = function()
 	function clickCanvas (event)
 	{
 		var canvas = event.target;
-		var gene_winer = new Gene(0,0,0,0,0);
+		var gene_winer = new Gene(0,0,0,0,0,0);
 		gene_winer.setGene(paintArr[canvas.index_i][canvas.index_j].life_tree.gene);
 		for (var i in paintArr) {
 			for (var j in paintArr[i]) {
@@ -99,7 +97,7 @@ var Choices = function()
 	for (var i = 0; i < 3; ++i) {
 		var arr_temp = [];
 		for (var j = 0; j < 2; ++j) {
-			var init_gene = new Gene(1, 50, 30, 0.5, 10);
+			var init_gene = new Gene(1, 40, 0.9, 1, 0, 1);
 			init_gene.mutate();
 			arr_temp.push(new Paint(i, j, clickCanvas, init_gene));
 		}
