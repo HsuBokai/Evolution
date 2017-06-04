@@ -174,11 +174,10 @@ LifeTree.prototype.animate = function(paint)
 	paint.clearPaint();
 	this.level_1_count = 0;
 	this.growPoints = [];
-	function sleep (time)
-	{
-		return new Promise((resolve) => setTimeout(resolve, time));
+	function growFunc(life_tree, paint) {
+		life_tree.grow(paint);
 	}
 	for(var i=0; i<this.gene.total_level; ++i) {
-		sleep(i * 500).then(() => {this.grow(paint)})
+		setTimeout(growFunc, i * 500, this, paint);
 	}
 }
